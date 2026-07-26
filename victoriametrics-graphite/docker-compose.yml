@@ -1,0 +1,17 @@
+services:
+  victoriametrics:
+    image: "docker.io/victoriametrics/victoria-metrics:v1.148.0@sha256:407013e902f9a0ba1d4b2d4c077c47bbaf917c893c52ff39b19efe83a654afda"
+    command: -retentionPeriod=1w -storageDataPath=/victoria-metrics -graphiteListenAddr=:2003
+    ports:
+      - "8428:8428/tcp"
+    volumes:
+      - "victoriametrics-data:/victoria-metrics"
+  gostatsd:
+    image: "docker.io/atlassianlabs/gostatsd:41.1.5@sha256:512cb81ef37a756e02566f1a876ba8f30a46facf56ec1348501a7937a7df4ef3"
+    command: --config-path=/gostatsd.toml
+    ports:
+      - "8125:8125/tcp"
+      - "8125:8125/udp"
+
+volumes:
+  victoriametrics-data:
